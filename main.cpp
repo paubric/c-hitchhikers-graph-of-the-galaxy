@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>
+#include <cstdlib>
 #define MARKER "."
 #define N 10
 
@@ -8,8 +9,9 @@ using namespace std;
 
 ifstream fi("data.in");
 
-int path[20] = {0}, path2[20] = {0}, path_length, path2_length;
-char target1[] = "Venus", target2[] = "Moon";
+int path[20] = {0}, path2[20] = {0}, path_length, path2_length, m = 0, o;
+char target1[] = "Titan", target2[] = "Moon", itinerary[30][30];
+float itinerary_d[30];
 bool target_found = false;
 
 struct Node
@@ -18,6 +20,7 @@ struct Node
   Node  *parent;
   Node  *child[N];
   int   child_count = 0;
+  float d_to_parent = 0;
 } *root = NULL;
 
 void traverse(Node *root, int depth)
@@ -26,7 +29,7 @@ void traverse(Node *root, int depth)
   {
     for (int i = 0;i < depth;i++)
       cout << "---";
-    cout << "> " << root->name << "(" << root->child_count << ")" << endl;
+    cout << "> " << root->name << "(" << root->child_count << " - " << root->d_to_parent << ")" << endl;
     for (int i = 0; i < N; i++)
         traverse(root->child[i], depth + 1);
   }
@@ -63,7 +66,9 @@ void search(char target[30], Node *root, int k)
   }
 }
 
-void calculate_route() {
+void calculate_route(Node *root) {
+  Node *aux;
+
   cout << "[*] Calculating best route from " << target1 << " to " << target2 << "..." << endl;
   int k = 0;
 
@@ -71,8 +76,32 @@ void calculate_route() {
     k++;
   k--;
   cout << "Last common node: " << k << endl;
-  
 
+  for (int i = 0;i <= k;i++)
+  {
+    root = root->child[path[i]];
+    //cout << root->name << endl;
+  }
+  aux = root;
+  for (int i = k + 1;i < path_length;i++)
+  {
+    root = root->child[path[i]];
+    itinerary_d[m] = root->d_to_parent;
+    strcpy(itinerary[m++], root->name);
+  }
+  for (int i = 0;i < m / 2;i++)
+  {
+    swap(itinerary[i], itinerary[m - i - 1]);
+    swap(itinerary_d[i], itinerary_d[m - i - 1]);
+  }
+  root = aux;
+  strcpy(itinerary[m++], root->name);
+  for (int i = k + 1;i < path2_length;i++)
+  {
+    root = root->child[path2[i]];
+    itinerary_d[m - 1] = root->d_to_parent;
+    strcpy(itinerary[m++], root->name);
+  }
 }
 
 void print_path() {
@@ -99,6 +128,7 @@ int read_data(Node *&root, Node *parent)
 
   root = newNode(val);
   root->parent = parent;
+  fi >> root->d_to_parent;
 
   int i;
   for (i = 0; i < N; i++)
@@ -110,17 +140,72 @@ int read_data(Node *&root, Node *parent)
 
 int main()
 {
+  system("clear");
+  cout << "[*] Welcome to 'Heart of Gold'!" << endl;
+  cout << "[*] Initializing space travel console..." << endl;
+  cout << "[*] Loading galactic catalogue..." << endl;
+  Node *root;
   read_data(root, NULL);
-  traverse(root, 0);
+  do {
+    system("clear");
+    cout << "[*] Loading menu..." << endl;
 
-  search(target1, root, 0);
-  target_found = false;
-  print_path();
-  path_dup();
+    cout << "(1) About the 'Heart of Gold'" << endl;
+    cout << "(2) View complete galactic catalogue" << endl;
+    cout << "(3) Search galactic catalogue for entry" << endl;
+    cout << "(4) Configure voyage" << endl;
+    cout << "(0) Exit" << endl;
+    cout << "Enter selection: ";
+    cin >> o;
 
-  search(target2, root, 0);
-  print_path();
+    switch (o)
+    {
+      case 1:
+        cout << "The starship Heart of Gold was the first spacecraft to make use of the Infinite Improbability Drive. The craft was stolen by then-President Zaphod Beeblebrox at the official launch of the ship, as he was supposed to be officiating the launch. Later, during the use of the Infinite Improbability Drive, the ship picked up Arthur Dent and Ford Prefect, who were floating unprotected in deep space in the same star sector, having just escaped the destruction of the same planet.";
+        cout << endl;
+        break;
+      case 2:
+        traverse(root, 0);
+        break;
+      case 3:
+      {
+        cout << "Search: ";
+        cin >> target1;
+        search(target1, root, 0);
+        target_found = false;
+        print_path();
+        break;
+      }
+      case 4:
+      {
+        cout << "Your location: ";
+        cin >> target1;
+        cout << "Your destination: ";
+        cin >> target2;
+        search(target2, root, 0);
+        target_found = false;
+        print_path();
+        path_dup();
 
-  calculate_route();
+        search(target1, root, 0);
+        print_path();
+
+        calculate_route(root);
+        for (int i = 0;i < m;i++)
+          cout << itinerary[i] << " ";
+        cout << endl;
+        for (int i = 0;i < m - 1;i++)
+          cout << itinerary_d[i] << " ";
+        cout << endl;
+      }
+      default:
+        return 0;
+    }
+    cin.get();
+    cin.get();
+  } while(true);
+
+
+
   return 0;
 }
