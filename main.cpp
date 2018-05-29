@@ -2,6 +2,7 @@
 #include <fstream>
 #include <cstring>
 #include <cstdlib>
+#include <Windows.h>
 #define MARKER "."
 #define N 10
 
@@ -29,7 +30,7 @@ void traverse(Node *root, int depth)
   {
     for (int i = 0;i < depth;i++)
       cout << "---";
-    cout << "> " << root->name << "(" << root->child_count << " - " << root->d_to_parent << ")" << endl;
+    cout << "> " << root->name << " (" << root->child_count << " children - " << root->d_to_parent << " LY to parent)" << endl;
     for (int i = 0; i < N; i++)
         traverse(root->child[i], depth + 1);
   }
@@ -140,14 +141,14 @@ int read_data(Node *&root, Node *parent)
 
 int main()
 {
-  system("clear");
+  system("cls");
   cout << "[*] Welcome to 'Heart of Gold'!" << endl;
   cout << "[*] Initializing space travel console..." << endl;
   cout << "[*] Loading galactic catalogue..." << endl;
   Node *root;
   read_data(root, NULL);
   do {
-    system("clear");
+    system("cls");
     cout << "[*] Loading menu..." << endl;
 
     cout << "(1) About the 'Heart of Gold'" << endl;
@@ -172,8 +173,15 @@ int main()
         cout << "Search: ";
         cin >> target1;
         search(target1, root, 0);
+        if (target_found == true)
+        {
+            cout << "[*] Destination " << target1 << " found on level " << path_length << endl;
+            //print_path();
+        }
+        else
+            cout << "[*] Destination " << target1 << " not found!" << endl;
         target_found = false;
-        print_path();
+
         break;
       }
       case 4:
@@ -183,20 +191,31 @@ int main()
         cout << "Your destination: ";
         cin >> target2;
         search(target2, root, 0);
+        if (target_found == false)
+        {
+            cout << "[*] Location " << target2 << " not found!";
+            break;
+        }
         target_found = false;
-        print_path();
+        //print_path();
         path_dup();
 
         search(target1, root, 0);
-        print_path();
-
+        if (target_found == false)
+        {
+            cout << "[*] Location " << target1 << " not found!";
+            break;
+        }
+        //print_path();
+        cout << endl;
         calculate_route(root);
         for (int i = 0;i < m;i++)
-          cout << itinerary[i] << " ";
+        {
+            cout << itinerary[i] << " ";
+            Sleep(itinerary_d[i]*1000);
+        }
         cout << endl;
-        for (int i = 0;i < m - 1;i++)
-          cout << itinerary_d[i] << " ";
-        cout << endl;
+        cout << "[*] Destination reached!";
       }
       default:
         return 0;
