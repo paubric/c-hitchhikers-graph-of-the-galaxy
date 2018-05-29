@@ -111,6 +111,8 @@ void print_path() {
   cout << " ";
 }
 
+
+
 Node* newNode(char name[30])
 {
     Node *temp = new Node;
@@ -139,6 +141,20 @@ int read_data(Node *&root, Node *parent)
   return 0;
 }
 
+void browse(Node *root)
+{
+    cout << endl;
+    for (int i = 0;i < root->child_count;i++)
+        cout << "(" << i << ") " << root->child[i]->name << endl;
+    cout << "[*] Enter option: ";
+    cin >> o;
+    if (o >= 0 && o <= root->child_count - 1)
+        browse(root->child[o]);
+    else
+        if (o == -1)
+            browse(root->parent);
+}
+
 int main()
 {
   system("cls");
@@ -155,6 +171,7 @@ int main()
     cout << "(2) View complete galactic catalogue" << endl;
     cout << "(3) Search galactic catalogue for entry" << endl;
     cout << "(4) Configure voyage" << endl;
+    cout << "(5) Browse catalogue" << endl;
     cout << "(0) Exit" << endl;
     cout << "Enter selection: ";
     cin >> o;
@@ -216,6 +233,10 @@ int main()
         }
         cout << endl;
         cout << "[*] Destination reached!";
+      }
+      case 5:
+      {
+        browse(root);
       }
       default:
         return 0;
