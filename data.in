@@ -1,21 +1,21 @@
 Milky_Way 1
 
-Native_System 1
+Native_System 10
 
-Sun 1
+Sun 0
 
 Mercury 1 .
-Venus 1 .
-Earth 3 Moon 4 . .
-Mars 1 Phobos 1 . Deimos 1 . .
-Jupiter 1 Io 1 . Europa 1 . Callisto 1 . Ganymede 1 . .
-Saturn 2 Titan 1 . Rhea 1 . Dione 1 . Hyperion 1 . Phoebe 1 . .
-Uranus 1 Umbriel 1 . Ariel 1 . Titania 1 . Puck 1 . .
-Neptune 1 Tritone 1 . Proteus 1 . Neso 1 . .
-Pluto 1 Charon 1 . . .
+Venus 2  .
+Earth 3 Moon 0.5 . .
+Mars 4 Phobos 0.5 . Deimos 0.5 . .
+Jupiter 5  Io 0.5 . Europa 0.5 . Callisto 0.5 . Ganymede 0.5 . .
+Saturn 6  Titan 0.5 . Rhea 0.5 . Dione 0.5 . Hyperion 0.5 . Phoebe 0.5 . .
+Uranus 7  Umbriel 0.5 . Ariel 0.5 . Titania 0.5 . Puck 0.5 . .
+Neptune 8  Tritone 0.5 . Proteus 0.5 . Neso 0.5 . .
+Pluto 9  Charon 0.5 . . .
 
-Alpha_Centauri 1
+Alpha_Centauri 10
 
-Proxima_Centauri_A 1 . Proxima_Centauri_B 1 . Proxima_Centauri_C 1 . .
+Proxima_Centauri_A 4 . Proxima_Centauri_B 4 . Proxima_Centauri_C 3 . .
 
-Betelgeuse 1 . .
+Betelgeuse 8 . .
